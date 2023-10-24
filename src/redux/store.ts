@@ -1,4 +1,4 @@
-import { configureStore,  ThunkAction, Action} from '@reduxjs/toolkit';
+import { configureStore} from '@reduxjs/toolkit';
 import login from './slices/loginSlice';
 import tableSlice from './slices/tableSlice';
 
