@@ -1,25 +1,35 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useAppSelector } from './redux/hooks/hooks';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './Pages/Login';
+import ContentPage from './Pages/Content';
+import 'bootstrap/dist/css/bootstrap.min.css'
 
-function App() {
+
+
+const App: React.FC = () => {
+
+  const { isAuthenticated } = useAppSelector(state => state.login)
+  const [user, setUser] = React.useState<string | null>('')
+  
+  React.useEffect(() => {
+
+    const user = localStorage.getItem('user')
+    setUser(user)
+
+  }, [])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+          <Routes>
+            <Route path='/' element={isAuthenticated || user ? <ContentPage /> : <Navigate to='/login' />} />
+            <Route path='/login' element={isAuthenticated || user ? <ContentPage /> : <LoginPage />} />
+            <Route path='*' element={<Navigate to='/' />} />
+          </Routes>
+
+      </Router>
+    </>
   );
 }
 
