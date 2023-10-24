@@ -120,43 +120,97 @@ return (
               </div>
               
               <Modal show={isDeleteModalOpen} onHide={() => setDeleteModalOpen(false)}>
-                  <Modal.Header closeButton>
-                      <Modal.Title>Confirm Deletion</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>Are you sure you want to delete this row?</Modal.Body>
-                  <Modal.Footer>
-                      <Button variant="secondary" onClick={() => setDeleteModalOpen(false)}>
-                          Cancel
-                      </Button>
-                      <Button variant="danger" onClick={confirmDelete}>
-                          Delete
-                      </Button>
-                  </Modal.Footer>
-              </Modal>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Confirm Deletion</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Are you sure you want to delete this row?</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() => setDeleteModalOpen(false)}>
+                                    Cancel
+                                </Button>
+                                <Button variant="danger" onClick={confirmDelete}>
+                                    Delete
+                                </Button>
+                            </Modal.Footer>
+                    </Modal>
+                    <Modal show={isModalOpen} onHide={() => setModalOpen(false)}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Information</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <Form>
+                            <Form.Group controlId="formName">
+                                <Form.Label>Name</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={selectedRow?.name || ''}
+                                    onChange={(e) => setSelectedRow((prev) => ({ ...prev!, name: e.target.value }))}
+                                />
+                            </Form.Group>
 
-              <Modal show={isModalOpen} onHide={() => setModalOpen(false)}>
-                  <Modal.Header closeButton>
-                      <Modal.Title>Information</Modal.Title>
-                  </Modal.Header>
-                  <Modal.Body>
-                  </Modal.Body>
-                  <Modal.Footer>
-                      <Button variant="secondary" onClick={() => {
-                          setModalOpen(false);
-                          setFormError(null); 
-                      }}>
-                          Close
-                      </Button>
-                      <Button variant="primary" onClick={handleSubmit} disabled={!!formError}>
-                          Save Changes
-                      </Button>
-                  </Modal.Footer>
-              </Modal>
-              
-          </>
-      )}
+                            <Form.Group controlId="formEmail">
+                                <Form.Label>Email</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={selectedRow?.email || ''}
+                                    onChange={(e) => setSelectedRow((prev) => ({ ...prev!, email: e.target.value }))}
+                                />
+                            </Form.Group>
 
-      {error && <div className="error mt-3">{error}</div>}
+                            <Form.Group controlId="formBirthdayDate">
+                                <Form.Label>Birthday Date</Form.Label>
+                                <Form.Control
+                                    type="date"
+                                    value={selectedRow?.birthday_date || ''}
+                                    onChange={(e) => {
+                                        const regex = /^\d{4}-\d{2}-\d{2}$/;
+                                        if (!regex.test(e.target.value)) {
+                                            setFormError("Date has wrong format. Use this format: YYYY-MM-DD.");
+                                        } else {
+                                            setFormError(null);
+                                            setSelectedRow((prev) => ({ ...prev!, birthday_date: e.target.value }));
+                                        }
+                                    }}
+                                />
+                                {formError && <span className="text-danger">{formError}</span>}
+                            </Form.Group>
+
+                            <Form.Group controlId="formPhoneNumber">
+                                <Form.Label>Phone Number</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    value={selectedRow?.phone_number || ''}
+                                    onChange={(e) => setSelectedRow((prev) => ({ ...prev!, phone_number: e.target.value }))}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId="formAddress">
+                                <Form.Label>Address</Form.Label>
+                                <Form.Control
+                                    type="text"
+                                    value={selectedRow?.address || ''}
+                                    onChange={(e) => setSelectedRow((prev) => ({ ...prev!, address: e.target.value }))}
+                                />
+                            </Form.Group>
+
+                        
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() => {
+                                setModalOpen(false);
+                                setFormError(null); 
+                            }}>
+                                Close
+                            </Button>
+                            <Button variant="primary" onClick={handleSubmit} disabled={!!formError}>
+                                Save Changes
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
+                </>
+            )}
+            {error && <div className="error">{error}</div>}
 
       <div className="mt-5">
             <h3>About me</h3>
